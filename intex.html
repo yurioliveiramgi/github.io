@@ -4,68 +4,236 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Dígitos Verificadores - NIPE</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* Estilos Gerais */
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #f7fafc;
+            color: #2d3748;
+            margin: 0;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 896px;
+            margin: 0 auto;
+        }
+
+        /* Cabeçalho */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        header h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        header p {
+            font-size: 1.125rem;
+            color: #4a5568;
+        }
+
+        /* Cartões de Conteúdo */
+        .card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            margin-bottom: 2rem;
+        }
+        .card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2b6cb0;
+            border-bottom: 2px solid #bee3f8;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Calculadora */
+        .calculator-box {
+            background-color: #ebf8ff;
+            border: 2px dashed #63b3ed;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        .calculator-box label {
+            display: block;
+            font-size: 1.125rem;
+            color: #2d3748;
+            margin-bottom: 0.75rem;
+        }
+        #nipeInput {
+            width: 100%;
+            max-width: 448px;
+            margin: 0 auto;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-size: 1.125rem;
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+            transition: all 0.2s ease-in-out;
+        }
+        #nipeInput:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+        }
+        #calcularBtn {
+            margin-top: 1.25rem;
+            background-color: #3182ce;
+            color: white;
+            font-weight: 700;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-size: 1.125rem;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            transition: all 0.2s ease-in-out;
+        }
+        #calcularBtn:hover {
+            background-color: #2b6cb0;
+            transform: scale(1.05);
+        }
+        #resultadoWrapper {
+            margin-top: 1.5rem;
+        }
+        #resultadoWrapper p {
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+        #resultado {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #2f855a;
+            background-color: #f0fff4;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left: 5px solid #48bb78;
+            display: inline-block;
+        }
+        #erro {
+            color: #c53030;
+            font-weight: 600;
+            margin-top: 1rem;
+            height: 1.5rem;
+        }
+
+        /* Accordion (Sanfona) */
+        .accordion-item {
+            border-top: 1px solid #e2e8f0;
+        }
+        .accordion-item:last-child {
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .accordion-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 1rem 0;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.125rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .accordion-button:hover {
+            background-color: #f7fafc;
+        }
+        .accordion-button svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            transition: transform 0.3s ease-out;
+        }
+        .accordion-button.open svg {
+             transform: rotate(180deg);
         }
         .accordion-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease-out;
+            padding: 0 1rem;
         }
+        .accordion-content-inner {
+            padding-bottom: 1rem;
+        }
+        .accordion-content code {
+            display: block;
+            background-color: #edf2f7;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border-radius: 0.375rem;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: left;
+        }
+        .accordion-content ul {
+            list-style-position: inside;
+            list-style-type: disc;
+            color: #4a5568;
+            font-size: 0.875rem;
+        }
+
+        @media (min-width: 640px) {
+            body { padding: 2rem; }
+            .card { padding: 2rem; }
+            .calculator-box { padding: 2rem; }
+            .accordion-content code { text-align: left; }
+        }
+
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body>
 
-    <div class="container mx-auto max-w-4xl p-4 sm:p-8">
-        <header class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">Simulador de Dígitos Verificadores do NIPE</h1>
-            <p class="text-lg text-gray-600">Uma ferramenta para validar e gerar o Número de Identificação de Processo Eletrônico.</p>
+    <div class="container">
+        <header>
+            <h1>Simulador de Dígitos Verificadores do NIPE</h1>
+            <p>Uma ferramenta para validar e gerar o Número de Identificação de Processo Eletrônico.</p>
         </header>
 
-        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
-            <h2 class="text-2xl font-bold text-blue-700 border-b-2 border-blue-200 pb-2 mb-4">O que é o NIPE?</h2>
-            <p class="mb-3">O <strong>Número de Identificação de Processo Eletrônico (NIPE)</strong> é uma numeração de protocolo criada para atender à expansão do Processo Eletrônico Nacional (PEN) para novas esferas, como municípios, estados e outras entidades públicas.</p>
+        <div class="card">
+            <h2>O que é o NIPE?</h2>
+            <p style="margin-bottom: 0.75rem;">O <strong>Número de Identificação de Processo Eletrônico (NIPE)</strong> é uma numeração de protocolo criada para atender à expansão do Processo Eletrônico Nacional (PEN) para novas esferas, como municípios, estados e outras entidades públicas.</p>
             <p>Sua estrutura padronizada de 20 dígitos favorece a comunicação e a interoperabilidade entre diferentes instituições. Para garantir a integridade e a validade de cada número, o NIPE utiliza <strong>dois dígitos verificadores (DV)</strong> ao final, calculados com base no robusto algoritmo do "módulo 11".</p>
         </div>
 
         <!-- Seção da Calculadora -->
-        <div class="bg-blue-50 border-2 border-dashed border-blue-400 p-6 sm:p-8 rounded-xl shadow-lg mb-8 text-center">
-            <h2 class="text-3xl font-bold text-blue-800 mb-4">Calculadora NIPE</h2>
-            <label for="nipeInput" class="block text-lg text-gray-700 mb-3">Insira os 18 dígitos base do NIPE:</label>
-            <input type="text" id="nipeInput" class="w-full max-w-md mx-auto p-3 border border-gray-300 rounded-lg text-center text-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Ex: 31.12172.1234567/2025">
-            
-            <button id="calcularBtn" onclick="calcularNIPE()" class="mt-5 bg-blue-600 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-blue-700 active:bg-blue-800 transform hover:scale-105 transition-transform duration-200 shadow-md">
-                Calcular Dígitos
-            </button>
-            
-            <div id="resultadoWrapper" class="mt-6" style="display: none;">
-                 <p class="text-gray-700 mb-2">NIPE completo com Dígitos Verificadores:</p>
-                 <div id="resultado" class="text-2xl sm:text-3xl font-bold text-green-700 bg-green-100 p-4 rounded-lg border-l-4 border-green-500 inline-block"></div>
+        <div class="card calculator-box">
+            <h2>Calculadora NIPE</h2>
+            <label for="nipeInput">Insira os 18 dígitos base do NIPE:</label>
+            <input type="text" id="nipeInput" placeholder="Ex: 31.12172.1234567/2025">
+            <button id="calcularBtn" onclick="calcularNIPE()">Calcular Dígitos</button>
+            <div id="resultadoWrapper" style="display: none;">
+                 <p>NIPE completo com Dígitos Verificadores:</p>
+                 <div id="resultado"></div>
             </div>
-
-            <p id="erro" class="text-red-600 font-semibold mt-4 h-6"></p>
+            <p id="erro"></p>
         </div>
         <!-- Fim da Seção da Calculadora -->
 
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <h2 class="text-2xl font-bold text-blue-700 border-b-2 border-blue-200 pb-2 mb-4">Exemplos de Aplicação</h2>
-            <p class="mb-4 text-gray-600">Clique em cada exemplo abaixo para expandir e ver os detalhes de sua composição.</p>
-            <div id="accordion-container" class="border-t border-gray-200">
+        <div class="card">
+            <h2>Exemplos de Aplicação</h2>
+            <p style="margin-bottom: 1rem; color: #4a5568;">Clique em cada exemplo abaixo para expandir e ver os detalhes de sua composição.</p>
+            <div id="accordion-container">
                 <!-- Exemplo 1 -->
-                <div>
-                    <button onclick="toggleAccordion(this)" class="flex items-center justify-between w-full py-4 text-left font-semibold text-lg hover:bg-gray-50 focus:outline-none">
+                <div class="accordion-item">
+                    <button onclick="toggleAccordion(this)" class="accordion-button">
                         <span>Secretaria da Saúde de Betim (MG)</span>
-                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     <div class="accordion-content">
-                        <div class="px-4 pb-4">
-                            <code class="block bg-gray-200 p-3 my-2 rounded-md text-gray-800 font-mono text-center sm:text-left">31.12172.1234567/2025-48</code>
-                            <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                        <div class="accordion-content-inner">
+                            <code>31.12172.1234567/2025-48</code>
+                            <ul>
                                 <li><strong>31:</strong> Identificador de Origem referente ao estado de Minas Gerais.</li>
                                 <li><strong>121:</strong> Código da Instituição Vinculada (Município de Betim).</li>
                                 <li><strong>72:</strong> Código de Unidade Protocolizadora (Secretaria da Saúde de Betim).</li>
@@ -77,15 +245,15 @@
                     </div>
                 </div>
                 <!-- Exemplo 2 -->
-                <div class="border-t">
-                     <button onclick="toggleAccordion(this)" class="flex items-center justify-between w-full py-4 text-left font-semibold text-lg hover:bg-gray-50 focus:outline-none">
+                <div class="accordion-item">
+                     <button onclick="toggleAccordion(this)" class="accordion-button">
                         <span>Superintendência Estadual do IBGE em Mato Grosso</span>
-                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                      <div class="accordion-content">
-                        <div class="px-4 pb-4">
-                            <code class="block bg-gray-200 p-3 my-2 rounded-md text-gray-800 font-mono text-center sm:text-left">00.32154.1234567/2025-31</code>
-                            <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                        <div class="accordion-content-inner">
+                            <code>00.32154.1234567/2025-31</code>
+                            <ul>
                                 <li><strong>00:</strong> Identificador de Origem (Poder Executivo).</li>
                                 <li><strong>321:</strong> Código da Instituição Vinculada (IBGE).</li>
                                 <li><strong>54:</strong> Código de Unidade Protocolizadora (Superintendência em Mato Grosso).</li>
@@ -97,15 +265,15 @@
                     </div>
                 </div>
                 <!-- Exemplo 3 -->
-                <div class="border-t">
-                    <button onclick="toggleAccordion(this)" class="flex items-center justify-between w-full py-4 text-left font-semibold text-lg hover:bg-gray-50 focus:outline-none">
+                <div class="accordion-item">
+                    <button onclick="toggleAccordion(this)" class="accordion-button">
                         <span>Conselho Regional de Enfermagem de SP</span>
-                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     <div class="accordion-content">
-                        <div class="px-4 pb-4">
-                            <code class="block bg-gray-200 p-3 my-2 rounded-md text-gray-800 font-mono text-center sm:text-left">79.67872.1234567/2025-97</code>
-                            <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                        <div class="accordion-content-inner">
+                            <code>79.67872.1234567/2025-97</code>
+                            <ul>
                                 <li><strong>79:</strong> Identificador de Origem (Conselho Regional).</li>
                                 <li><strong>678:</strong> Código da Instituição Vinculada (Conselho Federal de Enfermagem).</li>
                                 <li><strong>72:</strong> Código de Unidade Protocolizadora (Conselho Regional de SP).</li>
@@ -117,15 +285,15 @@
                     </div>
                 </div>
                 <!-- Exemplo 4 -->
-                 <div class="border-t">
-                    <button onclick="toggleAccordion(this)" class="flex items-center justify-between w-full py-4 text-left font-semibold text-lg hover:bg-gray-50 focus:outline-none">
+                 <div class="accordion-item">
+                    <button onclick="toggleAccordion(this)" class="accordion-button">
                         <span>Agência da CEF de João Pessoa (Empresa Pública)</span>
-                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     <div class="accordion-content">
-                        <div class="px-4 pb-4">
-                            <code class="block bg-gray-200 p-3 my-2 rounded-md text-gray-800 font-mono text-center sm:text-left">60.99814.1234567/2025-11</code>
-                            <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                        <div class="accordion-content-inner">
+                            <code>60.99814.1234567/2025-11</code>
+                            <ul>
                                  <li><strong>60:</strong> Identificador de Origem (Empresas Públicas).</li>
                                  <li><strong>998:</strong> Código da Instituição Vinculada (Caixa Econômica Federal).</li>
                                  <li><strong>14:</strong> Código de Unidade Protocolizadora (Agência de João Pessoa).</li>
@@ -137,15 +305,15 @@
                     </div>
                 </div>
                 <!-- Exemplo 5 -->
-                 <div class="border-t border-b">
-                    <button onclick="toggleAccordion(this)" class="flex items-center justify-between w-full py-4 text-left font-semibold text-lg hover:bg-gray-50 focus:outline-none">
+                 <div class="accordion-item">
+                    <button onclick="toggleAccordion(this)" class="accordion-button">
                         <span>Secretaria de Turismo do Distrito Federal</span>
-                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     <div class="accordion-content">
-                        <div class="px-4 pb-4">
-                            <code class="block bg-gray-200 p-3 my-2 rounded-md text-gray-800 font-mono text-center sm:text-left">53.69223.1234567/2025-64</code>
-                            <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                        <div class="accordion-content-inner">
+                            <code>53.69223.1234567/2025-64</code>
+                            <ul>
                                 <li><strong>53:</strong> Identificador de Origem (Distrito Federal).</li>
                                 <li><strong>692:</strong> Código da Instituição Vinculada (Distrito Federal).</li>
                                 <li><strong>23:</strong> Código de Unidade Protocolizadora (Secretaria de Turismo do DF).</li>
@@ -199,16 +367,12 @@
         // Função para controlar a funcionalidade do accordion (sanfona).
         function toggleAccordion(button) {
             const content = button.nextElementSibling;
-            const icon = button.querySelector('svg');
-
             if (content.style.maxHeight) {
-                // Se já estiver aberto, fecha.
                 content.style.maxHeight = null;
-                icon.classList.remove('rotate-180');
+                button.classList.remove('open');
             } else {
-                // Se estiver fechado, abre.
                 content.style.maxHeight = content.scrollHeight + "px";
-                icon.classList.add('rotate-180');
+                button.classList.add('open');
             }
         }
     </script>
