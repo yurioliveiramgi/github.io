@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIPE - Número de Identificação de Processo Eletrônico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #0056b3;
+            text-align: center;
+        }
+        h2 {
+            margin-top: 30px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .calculator-box {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .calculator-box label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .calculator-box input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 250px;
+        }
+        .calculator-box button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .calculator-box button:hover {
+            background-color: #45a049;
+        }
+        .nipe-result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .nipe-full-code {
+            color: #007bff;
+        }
+        .example-section h3 {
+            color: #333;
+            margin-top: 20px;
+        }
+        .example-section ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            padding-left: 0;
+        }
+        .example-section li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>NIPE - Número de Identificação de Processo Eletrônico</h1>
+        <p>O <strong>Número de Identificação de Processo Eletrônico (NIPE)</strong> é uma proposta de numeração alternativa de protocolo criada para atender à expansão do Processo Eletrônico Nacional (PEN) para esferas municipais, estaduais e outras instituições com diferentes naturezas jurídicas. Ele surge como uma padronização do modelo de numeração de protocolo, visando facilitar a comunicação entre as instituições públicas de diversas esferas. O NIPE é composto por vinte dígitos numéricos, divididos em cinco grupos identificadores: Identificador de Origem, Identificador de Unidade, Identificador Sequencial, Identificador de Ano de Atribuição e Dígito Verificador.</p>
+        <p>Para auxiliar na compreensão e aplicação do NIPE, apresentamos uma ferramenta de simulação do cálculo dos dígitos verificadores, além de exemplos práticos de sua utilização.</p>
+
+        <hr>
+
+        <div class="calculator-box">
+            <h2 style="text-align: center; color: #333;">Calculadora de Dígitos Verificadores do NIPE</h2>
+            <p style="text-align: center; color: #555;">Insira o NIPE (sem os dígitos verificadores) para calcular os dois dígitos finais.</p>
+            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+                <label for="nipeInput">NIPE:</label>
+                <input type="text" id="nipeInput" placeholder="Ex: 87.54320.1203487/2025">
+            </div>
+            <div style="text-align: center;">
+                <button onclick="calcularDV()">Calcular DV</button>
+            </div>
+            <div class="nipe-result">
+                NIPE Completo: <span id="nipeCompleto" class="nipe-full-code"></span>
+            </div>
+        </div>
+
+        <script>
+            function calcularDV() {
+                const nipeInput = document.getElementById('nipeInput').value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                const nipeCompletoSpan = document.getElementById('nipeCompleto');
+
+                if (nipeInput.length !== 18) {
+                    nipeCompletoSpan.textContent = "Por favor, insira 18 dígitos numéricos do NIPE (sem os DVs).";
+                    nipeCompletoSpan.style.color = "red";
+                    return;
+                }
+
+                const algarismos = nipeInput.split('').map(Number);
+
+                // Cálculo do Primeiro Dígito Verificador (DV1)
+                let soma1 = 0;
+                const pesos1 = [19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2];
+                for (let i = 0; i < 18; i++) {
+                    soma1 += algarismos[i] * pesos1[i];
+                }
+                let resto1 = soma1 % 11;
+                let dv1 = 11 - resto1;
+                
+                // Ajuste conforme o documento: se o resultado for 10, DV1 é 0; se for 11, DV1 é 1.
+                if (dv1 === 10) dv1 = 0;
+                if (dv1 === 11) dv1 = 1;
+
+                // Cálculo do Segundo Dígito Verificador (DV2)
+                let soma2 = 0;
+                const pesos2 = [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2]; // Adiciona peso para DV1
+                const algarismosComDv1 = [...algarismos, dv1]; // Inclui o DV1 para o cálculo do DV2
+
+                for (let i = 0; i < 19; i++) { // Percorre 19 dígitos (18 do NIPE + DV1)
+                    soma2 += algarismosComDv1[i] * pesos2[i];
+                }
+                let resto2 = soma2 % 11;
+                let dv2 = 11 - resto2;
+
+                // Ajuste conforme o documento: se o resultado for 10, DV2 é 0; se for 11, DV2 é 1.
+                if (dv2 === 10) dv2 = 0;
+                if (dv2 === 11) dv2 = 1;
+
+
+                // Formatação do NIPE para exibição
+                const formattedNIPE = `${nipeInput.substring(0, 2)}.${nipeInput.substring(2, 7)}.${nipeInput.substring(7, 14)}/${nipeInput.substring(14, 18)}-${dv1}${dv2}`;
+                nipeCompletoSpan.textContent = formattedNIPE;
+                nipeCompletoSpan.style.color = "#007bff";
+            }
+        </script>
+
+        <h2 id="exemplos">Exemplos de Aplicação do NIPE</h2>
+
+        <p>A seguir, são apresentados alguns exemplos práticos de como o NIPE é aplicado em diferentes contextos institucionais, demonstrando a estrutura de seus grupos identificadores.</p>
+
+        <div class="example-section">
+            <h3>Secretaria da Saúde de Betim (MG)</h3>
+            <ul>
+                <li><strong>NIPE</strong>: 31.12172.1234567/2025-48</li>
+                <li><strong>31</strong>: Identificador de Origem referente ao estado de Minas Gerais, originado pelo código do IBGE.</li>
+                <li><strong>121</strong>: Código da Instituição Vinculada referente ao Município de Betim.</li>
+                <li><strong>72</strong>: Código de Unidade Protocolizadora, referente à Secretaria da Saúde de Betim (exemplo).</li>
+                <li><strong>1234567</strong>: Identificador Sequencial do Processo (exemplo).</li>
+                <li><strong>2025</strong>: Identificador de Ano de Atribuição do processo.</li>
+                <li><strong>48</strong>: Dígito Verificador.</li>
+            </ul>
+        </div>
+
+        <div class="example-section">
+            <h3>Superintendência Estadual do IBGE em Mato Grosso</h3>
+            <ul>
+                <li><strong>NIPE</strong>: 00.32154.1234567/2025-31</li>
+                <li><strong>00</strong>: Identificador de Origem referente ao Poder Executivo (exemplo).</li>
+                <li><strong>321</strong>: Código da Instituição Vinculada referente ao IBGE (exemplo).</li>
+                <li><strong>54</strong>: Código de Unidade Protocolizadora referente à Superintendência em Mato Grosso (exemplo).</li>
+                <li><strong>1234567</strong>: Identificador Sequencial do Processo (exemplo).</li>
+                <li><strong>2025</strong>: Identificador de Ano de Atribuição do processo.</li>
+                <li><strong>31</strong>: Dígito Verificador.</li>
+            </ul>
+        </div>
+
+        <div class="example-section">
+            <h3>Conselho Regional de Enfermagem de SP</h3>
+            <ul>
+                <li><strong>NIPE</strong>: 79.67872.1234567/2025-97</li>
+                <li><strong>79</strong>: Identificador de Origem referente Conselho Regional (exemplo).</li>
+                <li><strong>678</strong>: Código da Instituição Vinculada referente ao Conselho Federal de Enfermagem (exemplo).</li>
+                <li><strong>72</strong>: Código de Unidade Protocolizadora referente ao Conselho Regional de SP (exemplo).</li>
+                <li><strong>1234567</strong>: Identificador Sequencial do Processo (exemplo).</li>
+                <li><strong>2025</strong>: Identificador de Ano de Atribuição do processo.</li>
+                <li><strong>97</strong>: Dígito Verificador.</li>
+            </ul>
+        </div>
+
+        <div class="example-section">
+            <h3>Agência da CEF de João Pessoa</h3>
+            <ul>
+                <li><strong>NIPE</strong>: 60.12345.1234567/2025-11</li>
+                <li><strong>60</strong>: Identificador de Origem referente à Empresas Públicas (exemplo).</li>
+                <li><strong>998</strong>: Código da Instituição Vinculada referente à Caixa Econômica Federal (exemplo).</li>
+                <li><strong>14</strong>: Código de Unidade Protocolizadora referente à Agência de João Pessoa (exemplo).</li>
+                <li><strong>1234567</strong>: Identificador Sequencial do o Processo (exemplo).</li>
+                <li><strong>2025</strong>: Identificador de Ano de Atribuição do processo.</li>
+                <li><strong>11</strong>: Dígito Verificador.</li>
+            </ul>
+        </div>
+
+        <div class="example-section">
+            <h3>Secretaria de Turismo do Distrito Federal</h3>
+            <ul>
+                <li><strong>NIPE</strong>: 53.69223.1234567/2025-64</li>
+                <li><strong>53</strong>: Identificador de Origem referente ao código do Distrito Federal, originado pelo código do IBGE.</li>
+                <li><strong>692</strong>: Código da Instituição Vinculada referente ao Distrito Federal (exemplo).</li>
+                <li><strong>23</strong>: Código de Unidade Protocolizadora referente à Secretaria de Turismo do Distrito Federal (exemplo).</li>
+                <li><strong>1234567</strong>: Identificador Sequencial do Processo (exemplo).</li>
+                <li><strong>2025</strong>: Identificador de Ano de Atribuição do processo.</li>
+                <li><strong>64</strong>: Dígito Verificador.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
