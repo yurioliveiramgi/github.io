@@ -12,6 +12,11 @@
         body {
             font-family: 'Inter', sans-serif;
         }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -49,27 +54,107 @@
 
         <div class="bg-white p-6 rounded-xl shadow-md">
             <h2 class="text-2xl font-bold text-blue-700 border-b-2 border-blue-200 pb-2 mb-4">Exemplos de Aplicação</h2>
-            <p class="mb-4 text-gray-600">Os exemplos abaixo, extraídos da documentação oficial, demonstram a aplicação da numeração NIPE em diferentes contextos institucionais.</p>
-            <div class="space-y-4">
+            <p class="mb-4 text-gray-600">Clique em cada exemplo abaixo para expandir e ver os detalhes de sua composição.</p>
+            <div id="accordion-container" class="border-t border-gray-200">
+                <!-- Exemplo 1 -->
                 <div>
-                    <p class="font-semibold">Secretaria da Saúde de Betim (MG):</p>
-                    <code class="block bg-gray-200 p-3 rounded-md text-gray-800 font-mono text-center sm:text-left">31.12172.1234567/2025-48</code>
+                    <button onclick="toggleAccordion(this)" class="flex items-center justify-between w-full py-4 text-left font-semibold text-lg hover:bg-gray-50 focus:outline-none">
+                        <span>Secretaria da Saúde de Betim (MG)</span>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-4 pb-4">
+                            <code class="block bg-gray-200 p-3 my-2 rounded-md text-gray-800 font-mono text-center sm:text-left">31.12172.1234567/2025-48</code>
+                            <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                                <li><strong>31:</strong> Identificador de Origem referente ao estado de Minas Gerais.</li>
+                                <li><strong>121:</strong> Código da Instituição Vinculada (Município de Betim).</li>
+                                <li><strong>72:</strong> Código de Unidade Protocolizadora (Secretaria da Saúde de Betim).</li>
+                                <li><strong>1234567:</strong> Identificador Sequencial do Processo.</li>
+                                <li><strong>2025:</strong> Ano de Atribuição do processo.</li>
+                                <li><strong>48:</strong> Dígito Verificador.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <p class="font-semibold">Superintendência Estadual do IBGE em Mato Grosso:</p>
-                    <code class="block bg-gray-200 p-3 rounded-md text-gray-800 font-mono text-center sm:text-left">00.32154.1234567/2025-31</code>
+                <!-- Exemplo 2 -->
+                <div class="border-t">
+                     <button onclick="toggleAccordion(this)" class="flex items-center justify-between w-full py-4 text-left font-semibold text-lg hover:bg-gray-50 focus:outline-none">
+                        <span>Superintendência Estadual do IBGE em Mato Grosso</span>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                     <div class="accordion-content">
+                        <div class="px-4 pb-4">
+                            <code class="block bg-gray-200 p-3 my-2 rounded-md text-gray-800 font-mono text-center sm:text-left">00.32154.1234567/2025-31</code>
+                            <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                                <li><strong>00:</strong> Identificador de Origem (Poder Executivo).</li>
+                                <li><strong>321:</strong> Código da Instituição Vinculada (IBGE).</li>
+                                <li><strong>54:</strong> Código de Unidade Protocolizadora (Superintendência em Mato Grosso).</li>
+                                <li><strong>1234567:</strong> Identificador Sequencial do Processo.</li>
+                                <li><strong>2025:</strong> Ano de Atribuição do processo.</li>
+                                <li><strong>31:</strong> Dígito Verificador.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <p class="font-semibold">Conselho Regional de Enfermagem de SP:</p>
-                    <code class="block bg-gray-200 p-3 rounded-md text-gray-800 font-mono text-center sm:text-left">79.67872.1234567/2025-97</code>
+                <!-- Exemplo 3 -->
+                <div class="border-t">
+                    <button onclick="toggleAccordion(this)" class="flex items-center justify-between w-full py-4 text-left font-semibold text-lg hover:bg-gray-50 focus:outline-none">
+                        <span>Conselho Regional de Enfermagem de SP</span>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-4 pb-4">
+                            <code class="block bg-gray-200 p-3 my-2 rounded-md text-gray-800 font-mono text-center sm:text-left">79.67872.1234567/2025-97</code>
+                            <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                                <li><strong>79:</strong> Identificador de Origem (Conselho Regional).</li>
+                                <li><strong>678:</strong> Código da Instituição Vinculada (Conselho Federal de Enfermagem).</li>
+                                <li><strong>72:</strong> Código de Unidade Protocolizadora (Conselho Regional de SP).</li>
+                                <li><strong>1234567:</strong> Identificador Sequencial do Processo.</li>
+                                <li><strong>2025:</strong> Ano de Atribuição do processo.</li>
+                                <li><strong>97:</strong> Dígito Verificador.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <p class="font-semibold">Agência da CEF de João Pessoa (Empresa Pública):</p>
-                    <code class="block bg-gray-200 p-3 rounded-md text-gray-800 font-mono text-center sm:text-left">60.12345.1234567/2025-11</code>
+                <!-- Exemplo 4 -->
+                 <div class="border-t">
+                    <button onclick="toggleAccordion(this)" class="flex items-center justify-between w-full py-4 text-left font-semibold text-lg hover:bg-gray-50 focus:outline-none">
+                        <span>Agência da CEF de João Pessoa (Empresa Pública)</span>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-4 pb-4">
+                            <code class="block bg-gray-200 p-3 my-2 rounded-md text-gray-800 font-mono text-center sm:text-left">60.99814.1234567/2025-11</code>
+                            <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                                 <li><strong>60:</strong> Identificador de Origem (Empresas Públicas).</li>
+                                 <li><strong>998:</strong> Código da Instituição Vinculada (Caixa Econômica Federal).</li>
+                                 <li><strong>14:</strong> Código de Unidade Protocolizadora (Agência de João Pessoa).</li>
+                                 <li><strong>1234567:</strong> Identificador Sequencial do Processo.</li>
+                                 <li><strong>2025:</strong> Ano de Atribuição do processo.</li>
+                                 <li><strong>11:</strong> Dígito Verificador.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                 <div>
-                    <p class="font-semibold">Secretaria de Turismo do Distrito Federal:</p>
-                    <code class="block bg-gray-200 p-3 rounded-md text-gray-800 font-mono text-center sm:text-left">53.69223.1234567/2025-64</code>
+                <!-- Exemplo 5 -->
+                 <div class="border-t border-b">
+                    <button onclick="toggleAccordion(this)" class="flex items-center justify-between w-full py-4 text-left font-semibold text-lg hover:bg-gray-50 focus:outline-none">
+                        <span>Secretaria de Turismo do Distrito Federal</span>
+                        <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="px-4 pb-4">
+                            <code class="block bg-gray-200 p-3 my-2 rounded-md text-gray-800 font-mono text-center sm:text-left">53.69223.1234567/2025-64</code>
+                            <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                                <li><strong>53:</strong> Identificador de Origem (Distrito Federal).</li>
+                                <li><strong>692:</strong> Código da Instituição Vinculada (Distrito Federal).</li>
+                                <li><strong>23:</strong> Código de Unidade Protocolizadora (Secretaria de Turismo do DF).</li>
+                                <li><strong>1234567:</strong> Identificador Sequencial do Processo.</li>
+                                <li><strong>2025:</strong> Ano de Atribuição do processo.</li>
+                                <li><strong>64:</strong> Dígito Verificador.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -79,22 +164,14 @@
         // Função para calcular um dígito verificador usando o algoritmo Módulo 11.
         function calcularDV(digitos, pesoInicial) {
             let soma = 0;
-            // Multiplica cada dígito pelo seu peso correspondente e soma os resultados.
             for (let i = 0; i < digitos.length; i++) {
                 soma += parseInt(digitos[i], 10) * (pesoInicial - i);
             }
-
             const resto = soma % 11;
             const resultado = 11 - resto;
-
-            // Aplica as regras especiais para o resultado, conforme o documento.
-            if (resultado === 10) {
-                return 0;
-            } else if (resultado === 11) {
-                return 1;
-            } else {
-                return resultado;
-            }
+            if (resultado === 10) return 0;
+            if (resultado === 11) return 1;
+            return resultado;
         }
 
         // Função principal para calcular o NIPE completo a partir da entrada do usuário.
@@ -103,38 +180,36 @@
             const resultadoWrapperEl = document.getElementById('resultadoWrapper');
             const resultadoEl = document.getElementById('resultado');
             const erroEl = document.getElementById('erro');
-
-            // Limpa mensagens anteriores.
             resultadoWrapperEl.style.display = 'none';
             erroEl.textContent = '';
-
-            // Remove todos os caracteres não numéricos da entrada.
             const numeros = inputEl.value.replace(/[^\d]/g, '');
-
-            // Valida se a entrada contém exatamente 18 dígitos.
             if (numeros.length !== 18) {
                 erroEl.textContent = 'Erro: É necessário inserir exatamente 18 dígitos numéricos.';
                 return;
             }
-            
-            // Converte a string de números em um array de dígitos.
             const digitosArray = numeros.split('');
-            
-            // Calcula o primeiro dígito verificador (DV1) com peso inicial 19.
             const dv1 = calcularDV(digitosArray, 19);
-
-            // Adiciona o DV1 ao final do array para calcular o DV2.
             const digitosParaDV2 = [...digitosArray, dv1.toString()];
-            
-            // Calcula o segundo dígito verificador (DV2) com peso inicial 20.
             const dv2 = calcularDV(digitosParaDV2, 20);
-
-            // Formata o número NIPE completo para exibição.
             const nipeFormatado = `${numeros.slice(0, 2)}.${numeros.slice(2, 7)}.${numeros.slice(7, 14)}/${numeros.slice(14, 18)}-${dv1}${dv2}`;
-
-            // Exibe o resultado.
             resultadoEl.textContent = nipeFormatado;
             resultadoWrapperEl.style.display = 'block';
+        }
+        
+        // Função para controlar a funcionalidade do accordion (sanfona).
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('svg');
+
+            if (content.style.maxHeight) {
+                // Se já estiver aberto, fecha.
+                content.style.maxHeight = null;
+                icon.classList.remove('rotate-180');
+            } else {
+                // Se estiver fechado, abre.
+                content.style.maxHeight = content.scrollHeight + "px";
+                icon.classList.add('rotate-180');
+            }
         }
     </script>
 
